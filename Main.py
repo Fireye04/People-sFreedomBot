@@ -29,6 +29,14 @@ async def init(ctx):
 
     server = client.get_guild(target_server_id)
     channel = server.get_channel(768233149414768641)
+    member = ctx.message.author
+
+    async def check(ctx):
+        if ctx.message.author == member:
+            return True
+        else:
+            return False
+
     if not isinstance(ctx.channel, discord.channel.DMChannel):
         await ctx.send("Private command only please use in DMs. If you don't have a DM with me, use the .DM"
                        " command (.dm @mention hello)")
@@ -36,7 +44,7 @@ async def init(ctx):
         print(str(ctx.message.author))
         await ctx.send("Are you a BTN Student? (please respond 'yes' or 'no'.)")
         try:
-            btnStudent = await client.wait_for('message', timeout=30)
+            btnStudent = await client.wait_for('message',check=check, timeout=30)
             if btnStudent.content == "yes" or btnStudent.content == "Yes":
                 member = server.get_member(ctx.message.author.id)
                 var = discord.utils.get(server.roles, name = "BTN")
@@ -50,7 +58,7 @@ async def init(ctx):
             await ctx.send("Do you support BASIS's current student council? (please respond 'yes' or 'no')")
 
             try:
-                stucoSupport = await client.wait_for('message', timeout=30)
+                stucoSupport = await client.wait_for('message',check=check, timeout=30)
                 if stucoSupport.content == "yes" or stucoSupport.content == "Yes":
                     member = server.get_member(ctx.message.author.id)
                     var = discord.utils.get(server.roles, name = "Stuco")
@@ -65,8 +73,9 @@ async def init(ctx):
                 await asyncio.sleep(1)
 
                 await ctx.send("What IRL Political party do you identify with? (democrat, republican, libertarian, etc...)")
+
                 try:
-                    politicalView = await client.wait_for('message', timeout=30)
+                    politicalView = await client.wait_for('message',check=check, timeout=30)
 
                     await asyncio.sleep(1)
 
@@ -91,9 +100,16 @@ async def on_member_join(member):
     server = client.get_guild(target_server_id)
     channel = server.get_channel(768233149414768641)
     print(str(member))
+
+    async def check(ctx):
+        if ctx.message.author == member:
+            return True
+        else:
+            return False
+
     await member.send("Are you a BTN Student? (please respond 'yes' or 'no'.)")
     try:
-        btnStudent = await client.wait_for('message', timeout=30)
+        btnStudent = await client.wait_for('message',check=check, timeout=30)
         if btnStudent.content == "yes" or btnStudent.content == "Yes":
             member = server.get_member(member.id)
             var = discord.utils.get(server.roles, name = "BTN")
@@ -107,7 +123,7 @@ async def on_member_join(member):
         await member.send("Do you support BASIS's current student council? (please respond 'yes' or 'no')")
 
         try:
-            stucoSupport = await client.wait_for('message', timeout=30)
+            stucoSupport = await client.wait_for('message',check=check, timeout=30)
             if stucoSupport.content == "yes" or stucoSupport.content == "Yes":
                 member = server.get_member(member.id)
                 var = discord.utils.get(server.roles, name = "Stuco")
@@ -123,7 +139,7 @@ async def on_member_join(member):
 
             await member.send("What IRL Political party do you identify with? (democrat, republican, libertarian, etc...)")
             try:
-                politicalView = await client.wait_for('message', timeout=30)
+                politicalView = await client.wait_for('message',check=check, timeout=30)
 
                 await asyncio.sleep(1)
 
@@ -144,4 +160,4 @@ async def on_member_join(member):
 
 
 
-client.run("")
+client.run("NzY4MTk0NTEzMTM0MDI2Nzky.X4865A.kgSB6wotkWFg4p2brUtaYY_dYLM")
